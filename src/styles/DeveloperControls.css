@@ -1,0 +1,30 @@
+.developer-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 30px 0;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+}
+
+.developer-controls input {
+  flex: 1;
+}
+
+.developer-controls input,
+.developer-controls select {
+
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+}
+
+@media (max-width: 768px) {
+
+  .developer-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+}

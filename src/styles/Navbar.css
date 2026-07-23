@@ -1,0 +1,29 @@
+.navbar {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 20px 30px;
+
+}
+
+
+.navbar-actions {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+}
+
+
+.navbar-actions a {
+
+  text-decoration: none;
+
+}

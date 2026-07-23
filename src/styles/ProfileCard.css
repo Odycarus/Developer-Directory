@@ -1,0 +1,35 @@
+.developer-card {
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background: var(--surface-color);
+}
+
+
+.developer-company {
+  font-weight: bold;
+}
+
+
+.developer-location {
+  margin-top: 10px;
+}
+
+
+.profile-link {
+  display: inline-block;
+  margin-top: 15px;
+  text-decoration: none;
+  font-weight: bold;
+
+  transition: color 0.2s ease;
+}
+
+.profile-link:hover {
+  color: royalblue;
+}
+
+.developer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}

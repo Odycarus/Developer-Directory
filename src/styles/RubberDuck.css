@@ -1,0 +1,26 @@
+.rubber-duck {
+
+  position: fixed;
+
+  right: 18px;
+  bottom: 18px;
+
+  font-size: 18px;
+
+  text-decoration: none;
+
+  opacity: .35;
+
+  transition:
+    opacity .2s ease,
+    transform .2s ease;
+
+}
+
+.rubber-duck:hover {
+
+  opacity: 1;
+
+  transform: scale(1.25);
+
+}

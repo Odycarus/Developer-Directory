@@ -1,0 +1,38 @@
+.centered-page {
+
+  min-height: calc(100vh - 120px);
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  padding: 30px;
+
+}
+
+.centered-page h1 {
+
+  margin-bottom: 15px;
+
+}
+
+.centered-page p {
+
+  max-width: 550px;
+
+  margin-bottom: 25px;
+
+}
+
+.centered-page img {
+
+  width: 220px;
+  max-width: 80%;
+
+  margin-top: 20px;
+
+}

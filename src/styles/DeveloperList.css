@@ -1,0 +1,26 @@
+.developer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  background: var(--surface-color);
+}
+
+
+/* Tablet */
+@media (max-width: 900px) {
+
+  .developer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+/* Mobile */
+@media (max-width: 600px) {
+
+  .developer-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
