@@ -1,16 +1,103 @@
-# React + Vite
+# Developer Directory 🧑‍💻
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based developer directory application that allows users to browse, search, filter, and view developer profiles. The project focuses on building a clean user experience while practicing modern React concepts, API integration, routing, state management, and responsive design.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Github repo:
+https://github.com/Odycarus
 
-## React Compiler
+[Developer Directory]
+(https://developer-directory-git-main-odycarus1.vercel.app)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📌 Overview
 
-## Expanding the ESLint configuration
+Developer Directory is a frontend application that displays developer profiles fetched from a REST API. Users can explore developers, search for specific profiles, filter results, sort listings, and view detailed profile pages.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The project was built as a portfolio project to demonstrate practical React development skills and frontend application architecture.
+
+# ✨ Features
+
+## Developer Directory
+
+- Display developer profiles from a REST API
+- Search developers by name
+- Filter developers by location
+- Sort developers alphabetically
+- Pagination for developer listings
+- Individual developer profile pages
+- Dynamic profile URLs using slugs
+
+## User Experience
+
+- Responsive layout for different screen sizes
+- Loading states while fetching data
+- Error handling for failed API requests
+- Custom 404 page
+- Empty search results state
+- Browser title updates based on the current page
+
+## Theme System
+
+- Dark theme by default
+- Bright mode toggle
+- Theme preference saved using `localStorage`
+- Theme remains after refreshing the page
+
+## Easter Egg 🦆
+
+- Hidden rubber duck button
+- Secret counter page
+- Discovery counter using browser storage
+
+# 🛠️ Technologies Used
+
+## Frontend
+
+- React
+- JavaScript (ES6+)
+- React Router
+- CSS
+- Vite
+
+## State Management
+
+- React Context API
+- React Hooks:
+  - useState
+  - useEffect
+  - useContext
+  - useParams
+
+## Data
+
+- REST API integration
+- JSONPlaceholder API
+
+## Deployment
+
+- GitHub
+- Vercel
+
+TLDR :
+Through this project, I demonstrated:
+Building reusable React components
+Managing application state with Context API
+Fetching and handling external API data
+Implementing client-side routing
+Creating dynamic routes
+Designing responsive layouts
+Managing themes with CSS variables
+Persisting user preferences with browser storage
+Deploying a React application
+
+
+Possible improvements:
+Add a real backend API
+Create user authentication
+Add developer profile editing
+Connect to a real database
+Add automated testing
+Add TypeScript support
+Improve accessibility
+Add user accounts and saved profiles
