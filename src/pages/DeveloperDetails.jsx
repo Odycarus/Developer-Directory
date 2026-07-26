@@ -18,7 +18,7 @@ function DeveloperDetails() {
   const developer = developers.find(
     (developer) => developer.slug === id
   );
-
+console.log(developer?.avatar);
   useEffect(() => {
 
   if (developer) {
@@ -87,11 +87,19 @@ function DeveloperDetails() {
 
       <hr />
 
-
       <div className="profile-header">
 
         <div className="profile-avatar">
-          {developer.name.charAt(0)}
+
+  {developer.avatar ? (
+    <img 
+      src={developer.avatar}
+      alt={developer.name}
+    />
+  ) : (
+    developer.name.charAt(0)
+  )}
+
         </div>
 
 
@@ -168,6 +176,5 @@ function DeveloperDetails() {
     </div>
   );
 }
-
 
 export default DeveloperDetails;

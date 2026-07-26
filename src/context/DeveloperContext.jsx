@@ -4,7 +4,6 @@ import createSlug from "../utils/slug";
 
 const DeveloperContext = createContext();
 
-
 export function DeveloperProvider({ children }) {
 
   const [developers, setDevelopers] = useState([]);
@@ -32,13 +31,16 @@ export function DeveloperProvider({ children }) {
 
 
         const formattedUsers = data.map((user) => ({
+  id: user.id,
   name: user.name,
   slug: createSlug(user.name),
-  title: user.company.name,
-  location: `${user.address.city}, ${user.address.zipcode}`,
-  skills: ["React", "JavaScript"],
-  description: `Hello, my name is ${user.name}. I work at ${user.company.name}, and I currently reside in ${user.address.city}.`,
+  title: user.title,
+  location: user.location,
+  skills: user.skills,
+  description: user.description,
+  avatar: user.avatar
 }));
+
 
 
         setDevelopers(formattedUsers);
