@@ -13,8 +13,8 @@ function SortDropdown({ sortBy, setSortBy }) {
           Name (A-Z)
         </option>
 
-        <option value="company">
-          Company
+        <option value="affiliation">
+          Affiliation
         </option>
 
         <option value="location">

@@ -65,7 +65,7 @@ function Home() {
 
     switch(sortBy) {
 
-      case "company":
+      case "affiliation":
         return a.title.localeCompare(b.title);
 
       case "location":

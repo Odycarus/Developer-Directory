@@ -17,7 +17,7 @@ function ProfileCard2({
       </h2>
 
 
-      <p className="developer-company">
+      <p className="developer-affiliation">
         {title}
       </p>
 

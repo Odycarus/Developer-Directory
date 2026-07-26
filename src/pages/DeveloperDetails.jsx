@@ -123,11 +123,11 @@ console.log(developer?.avatar);
       <div className="profile-section">
 
         <h3>
-          Company
+          Affiliation
         </h3>
 
         <p>
-          {developer.title}
+          {developer.affiliation}
         </p>
 
       </div>

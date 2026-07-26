@@ -35,10 +35,11 @@ export function DeveloperProvider({ children }) {
   name: user.name,
   slug: createSlug(user.name),
   title: user.title,
+  affiliation: user.affiliation,
   location: user.location,
   skills: user.skills,
   description: user.description,
-  avatar: user.avatar
+  avatar: user.avatar,
 }));
 
 
