@@ -6,7 +6,6 @@ A React-based developer directory application that allows users to browse, searc
 
 Github repo:
 https://github.com/Odycarus
-
 [Developer Directory]
 (https://developer-directory-git-main-odycarus1.vercel.app)
 

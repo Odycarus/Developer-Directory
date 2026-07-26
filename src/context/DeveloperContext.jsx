@@ -19,7 +19,7 @@ export function DeveloperProvider({ children }) {
       try {
 
         const response = await fetch(
-          "https://jsonplaceholder.typicode.com/users"
+          "http://127.0.0.1:8000/api/developers/"
         );
 
 
