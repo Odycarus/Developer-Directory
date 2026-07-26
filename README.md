@@ -93,11 +93,11 @@ Deploying a React application
 
 
 Possible improvements:
-Add a real backend API
-Create user authentication
-Add developer profile editing
-Connect to a real database
-Add automated testing
+Add a real backend API,
+Create user authentication,
+Add developer profile editing,
+Connect to a real database,
+Add automated testing,
 Add TypeScript support
 Improve accessibility
 Add user accounts and saved profiles
