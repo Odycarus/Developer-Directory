@@ -25,7 +25,7 @@ The project was built as a portfolio project to demonstrate practical React deve
 - Sort developers alphabetically
 - Pagination for developer listings
 - Individual developer profile pages
-- Dynamic profile URLs using slugs
+- Dynamic profile URLs using ids
 
 ## User Experience
 

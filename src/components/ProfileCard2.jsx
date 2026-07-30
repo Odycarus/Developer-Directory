@@ -4,7 +4,7 @@ import "../styles/ProfileCard.css";
 
 function ProfileCard2({
   name,
-  slug,
+  id,
   title,
   location
 }) {
@@ -29,8 +29,9 @@ function ProfileCard2({
 
       <Link 
         className="profile-link"
-        to={`/developer/${slug}`}
+        to={`/developer/${id}`}
       >
+        
         View Profile →
       </Link>
 

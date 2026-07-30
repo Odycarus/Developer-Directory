@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import createSlug from "../utils/slug";
 
 
 const DeveloperContext = createContext();
@@ -33,7 +32,6 @@ export function DeveloperProvider({ children }) {
         const formattedUsers = data.map((user) => ({
   id: user.id,
   name: user.name,
-  slug: createSlug(user.name),
   title: user.title,
   affiliation: user.affiliation,
   location: user.location,

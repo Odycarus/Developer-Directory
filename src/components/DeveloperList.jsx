@@ -7,7 +7,7 @@ function DeveloperList({ developers }) {
 
       {developers.map((developer) => (
         <ProfileCard2
-          key={developer.slug}
+          key={developer.id}
           {...developer}
         />
       ))}

@@ -1,4 +1,4 @@
-function createSlug(text) {
+function createid(text) {
 
   return text
     .toLowerCase()
@@ -9,4 +9,4 @@ function createSlug(text) {
 }
 
 
-export default createSlug;
+export default createid;
