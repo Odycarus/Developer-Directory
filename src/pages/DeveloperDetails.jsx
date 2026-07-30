@@ -158,19 +158,14 @@ function DeveloperDetails() {
 
         <ul className="skills-container">
 
-          {developer.skills
-  .split(",")
-  .map((skill) => skill.trim())
-  .map((skill) => (
-
-            <li
-              key={skill}
-              className="skill-badge"
-            >
-              {skill}
-            </li>
-
-          ))}
+          {developer.skills.map((skill) => (
+  <li
+    key={skill}
+    className="skill-badge"
+  >
+    {skill}
+  </li>
+))}
 
         </ul>
 
