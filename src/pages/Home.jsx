@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import Counter from "../components/Counter";
 import SearchBar from "../components/SearchBar";
@@ -8,7 +9,11 @@ import DeveloperList from "../components/DeveloperList";
 import { useDeveloperContext } from "../context/DeveloperContext";
 import SkeletonList from "../components/SkeletonList";
 import DeveloperControls from "../components/DeveloperControls";
+import Notification from "../components/Notification";
+import "../styles/Notification.css";
+
 import "../styles/Home.css";
+
 
 function Home() {
 
@@ -25,13 +30,48 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
 
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+
+  const notification =
+    location.state?.notification;
+
+
+
+  useEffect(() => {
+
+    if (notification) {
+
+      const timer = setTimeout(() => {
+
+        navigate("/", {
+          replace: true,
+          state: {},
+        });
+
+      }, 3000);
+
+
+      return () => clearTimeout(timer);
+
+    }
+
+  }, [notification, navigate]);
+
+
+
   const developersPerPage = 9;
 
-     // Reset pagination when search/filter/sort changes
- useEffect(() => {
-  setCurrentPage(1);
-}, [searchTerm, selectedLocation, sortBy]);
-  
+
+
+  useEffect(() => {
+
+    setCurrentPage(1);
+
+  }, [searchTerm, selectedLocation, sortBy]);
+
+
 
   const locations = [
     "All",
@@ -41,6 +81,7 @@ function Home() {
       )
     ),
   ];
+
 
 
   const filteredDevelopers = developers.filter((developer) => {
@@ -61,6 +102,7 @@ function Home() {
   });
 
 
+
   const sortedDevelopers = [...filteredDevelopers].sort((a, b) => {
 
     switch(sortBy) {
@@ -78,7 +120,6 @@ function Home() {
   });
 
 
-  // Pagination logic
 
   const indexOfLastDeveloper =
     currentPage * developersPerPage;
@@ -99,43 +140,75 @@ function Home() {
   );
 
 
+
   if (loading) {
+
     return <SkeletonList />;
+
   }
+
 
 
   if (error) {
+
     return <p>Error: {error}</p>;
+
   }
 
 
+
   return (
+
     <div>
 
+
+      {notification && (
+
+        <Notification
+          message={notification.message}
+          type={notification.type}
+        />
+
+      )}
+
+
+
       <DeveloperControls
-  searchTerm={searchTerm}
-  setSearchTerm={setSearchTerm}
-  locations={locations}
-  selectedLocation={selectedLocation}
-  setSelectedLocation={setSelectedLocation}
-  sortBy={sortBy}
-  setSortBy={setSortBy}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        locations={locations}
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
       />
 
-{
-  currentDevelopers.length > 0 ? (
-    <DeveloperList
-      developers={currentDevelopers}
-    />
-  ) : (
-    <div className="empty-state">
-      <h2>No developers found.</h2>
-      <p>
-        Try adjusting your search or filters.
-      </p>
-    </div>
-  )
-}
+
+
+      {
+        currentDevelopers.length > 0 ? (
+
+          <DeveloperList
+            developers={currentDevelopers}
+          />
+
+        ) : (
+
+          <div className="empty-state">
+
+            <h2>
+              No developers found.
+            </h2>
+
+            <p>
+              Try adjusting your search or filters.
+            </p>
+
+          </div>
+
+        )
+      }
+
 
 
       <div className="pagination">
@@ -164,6 +237,7 @@ function Home() {
 
 
     </div>
+
   );
 
 }

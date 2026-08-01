@@ -5,6 +5,8 @@ import DeveloperDetails from "./pages/DeveloperDetails";
 import NotFound from "./pages/NotFound";
 import Counter from "./components/Counter";
 import RubberDuck from "./components/RubberDuck";
+import AddDeveloper from "./pages/AddDeveloper";
+import EditDeveloper from "./pages/EditDeveloper";
 
 function App() {
 
@@ -26,7 +28,14 @@ function App() {
           path="/counter"
           element={<Counter />}
         />
-
+        <Route
+          path="/add-developer"
+          element={<AddDeveloper />}
+        />
+        <Route
+          path="/developer/:id/edit"
+          element={<EditDeveloper />}
+        />
         <Route
           path="*"
           element={<NotFound />}

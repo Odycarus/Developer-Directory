@@ -18,17 +18,35 @@ function Navbar() {
 
       <div className="navbar-actions">
 
-        <Link to="/">
-          Home
+        <div className="navbar-top-actions">
+
+          <Link
+            to="/"
+            className="nav-button"
+          >
+            Home
+          </Link>
+
+
+          <button 
+            onClick={toggleTheme}
+            className="nav-button"
+          >
+            {brightMode ? "🌙 Dark Mode" : "☀️ Bright Mode"}
+          </button>
+
+        </div>
+
+
+        <Link
+          to="/add-developer"
+          className="add-developer-button"
+        >
+          + Add Developer
         </Link>
 
 
-        <button onClick={toggleTheme}>
-          {brightMode ? "🌙 Dark Mode" : "☀️ Bright Mode"}
-        </button>
-
       </div>
-
 
     </nav>
   );
