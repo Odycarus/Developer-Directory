@@ -24,7 +24,10 @@ function EditDeveloper() {
   });
 
 
+  const [errors, setErrors] = useState({});
+
   const [loading, setLoading] = useState(true);
+
 
 
   useEffect(() => {
@@ -42,12 +45,12 @@ function EditDeveloper() {
 
 
         setFormData({
-          name: data.name,
-          title: data.title,
-          affiliation: data.affiliation,
-          location: data.location,
+          name: data.name || "",
+          title: data.title || "",
+          affiliation: data.affiliation || "",
+          location: data.location || "",
           skills: data.skills.join(", "),
-          description: data.description,
+          description: data.description || "",
           avatar: null,
         });
 
@@ -85,9 +88,49 @@ function EditDeveloper() {
 
 
 
+  function validateForm() {
+
+    const newErrors = {};
+
+
+    const requiredFields = [
+      "name",
+      "title",
+      "skills",
+    ];
+
+
+    requiredFields.forEach((field) => {
+
+      if (!formData[field].trim()) {
+
+        newErrors[field] = `${field} is required.`;
+
+      }
+
+    });
+
+
+    setErrors(newErrors);
+
+
+    return Object.keys(newErrors).length === 0;
+
+  }
+
+
+
   async function handleSubmit(event) {
 
     event.preventDefault();
+
+
+    if (!validateForm()) {
+
+      return;
+
+    }
+
 
 
     const data = new FormData();
@@ -99,6 +142,7 @@ function EditDeveloper() {
     data.append("location", formData.location);
     data.append("skills", formData.skills);
     data.append("description", formData.description);
+
 
 
     if (formData.avatar) {
@@ -130,7 +174,11 @@ function EditDeveloper() {
       await refreshDevelopers();
 
 
-      navigate(`/developer/${id}`);
+      navigate(`/developer/${id}`, {
+        state: {
+          notification: "Developer Updated Successfully",
+        },
+      });
 
 
     } catch (error) {
@@ -153,7 +201,7 @@ function EditDeveloper() {
 
   return (
 
-    <div className="profile-page">
+    <div className="profile-page edit-form">
 
       <h1>
         Edit Developer
@@ -164,7 +212,8 @@ function EditDeveloper() {
         formData={formData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        buttonText="Update Developer"
+        buttonText="Save Changes"
+        errors={errors}
       />
 
 

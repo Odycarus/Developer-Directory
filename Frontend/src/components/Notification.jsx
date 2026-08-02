@@ -1,6 +1,6 @@
 import "../styles/Notification.css";
 
-function Notification({ message, type }) {
+function Notification({ message, type = "success" }) {
 
   if (!message) {
     return null;

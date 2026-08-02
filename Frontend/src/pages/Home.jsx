@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import Counter from "../components/Counter";
 import SearchBar from "../components/SearchBar";
 import LocationFilter from "../components/LocationFilter";
 import SortDropdown from "../components/SortDropdown";
@@ -10,7 +9,6 @@ import { useDeveloperContext } from "../context/DeveloperContext";
 import SkeletonList from "../components/SkeletonList";
 import DeveloperControls from "../components/DeveloperControls";
 import Notification from "../components/Notification";
-import "../styles/Notification.css";
 
 import "../styles/Home.css";
 
@@ -61,7 +59,9 @@ function Home() {
 
 
 
+
   const developersPerPage = 9;
+
 
 
 
@@ -70,6 +70,8 @@ function Home() {
     setCurrentPage(1);
 
   }, [searchTerm, selectedLocation, sortBy]);
+
+
 
 
 
@@ -84,11 +86,14 @@ function Home() {
 
 
 
+
+
   const filteredDevelopers = developers.filter((developer) => {
 
     const matchesLocation =
       selectedLocation === "All" ||
       developer.location.includes(selectedLocation);
+
 
 
     const matchesSearch =
@@ -97,9 +102,12 @@ function Home() {
         .includes(searchTerm.toLowerCase());
 
 
+
     return matchesLocation && matchesSearch;
 
   });
+
+
 
 
 
@@ -108,16 +116,26 @@ function Home() {
     switch(sortBy) {
 
       case "affiliation":
+
         return a.title.localeCompare(b.title);
 
+
+
       case "location":
+
         return a.location.localeCompare(b.location);
 
+
+
       default:
+
         return a.name.localeCompare(b.name);
+
     }
 
   });
+
+
 
 
 
@@ -125,8 +143,11 @@ function Home() {
     currentPage * developersPerPage;
 
 
+
   const indexOfFirstDeveloper =
     indexOfLastDeveloper - developersPerPage;
+
+
 
 
   const currentDevelopers = sortedDevelopers.slice(
@@ -135,9 +156,14 @@ function Home() {
   );
 
 
+
+
+
   const totalPages = Math.ceil(
     sortedDevelopers.length / developersPerPage
   );
+
+
 
 
 
@@ -149,6 +175,8 @@ function Home() {
 
 
 
+
+
   if (error) {
 
     return <p>Error: {error}</p>;
@@ -157,19 +185,25 @@ function Home() {
 
 
 
+
+
   return (
 
     <div>
 
 
+
       {notification && (
 
         <Notification
-          message={notification.message}
-          type={notification.type}
+          message={notification}
+          type="success"
         />
 
       )}
+
+
+
 
 
 
@@ -182,6 +216,9 @@ function Home() {
         sortBy={sortBy}
         setSortBy={setSortBy}
       />
+
+
+
 
 
 
@@ -200,9 +237,11 @@ function Home() {
               No developers found.
             </h2>
 
+
             <p>
               Try adjusting your search or filters.
             </p>
+
 
           </div>
 
@@ -211,29 +250,52 @@ function Home() {
 
 
 
+
+
+
+
       <div className="pagination">
+
 
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1}
         >
+
           Previous
+
         </button>
 
 
+
+
+
         <span>
+
           Page {currentPage} of {totalPages}
+
         </span>
+
+
+
 
 
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
+
           Next
+
         </button>
 
+
+
+
+
       </div>
+
+
 
 
     </div>

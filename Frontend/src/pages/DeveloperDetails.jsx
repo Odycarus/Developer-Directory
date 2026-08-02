@@ -1,6 +1,9 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/DeveloperDetails.css";
+import { useDeveloperContext } from "../context/DeveloperContext";
+import ConfirmModal from "../components/ConfirmModal";
+
 
 function DeveloperDetails() {
 
@@ -8,12 +11,18 @@ function DeveloperDetails() {
 
   const navigate = useNavigate();
 
+  const { refreshDevelopers } = useDeveloperContext();
+
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+
   const [developer, setDeveloper] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
 
-  // Fetch one developer from Django
+
   useEffect(() => {
 
     async function fetchDeveloper() {
@@ -24,17 +33,23 @@ function DeveloperDetails() {
           `http://127.0.0.1:8000/api/developers/${id}/`
         );
 
+
         if (!response.ok) {
+
           throw new Error("Developer not found.");
+
         }
+
 
         const data = await response.json();
 
         setDeveloper(data);
 
+
       } catch (err) {
 
         setError(err.message);
+
 
       } finally {
 
@@ -44,13 +59,16 @@ function DeveloperDetails() {
 
     }
 
+
     fetchDeveloper();
+
 
   }, [id]);
 
 
 
-  // Update browser title
+
+
   useEffect(() => {
 
     if (developer) {
@@ -73,23 +91,19 @@ function DeveloperDetails() {
 
     };
 
+
   }, [developer]);
+
+
+
 
 
 
   async function handleDelete() {
 
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this developer?"
-    );
-
-
-    if (!confirmDelete) {
-      return;
-    }
-
 
     try {
+
 
       const response = await fetch(
         `http://127.0.0.1:8000/api/developers/${id}/`,
@@ -99,6 +113,7 @@ function DeveloperDetails() {
       );
 
 
+
       if (!response.ok) {
 
         throw new Error("Failed to delete developer.");
@@ -106,7 +121,25 @@ function DeveloperDetails() {
       }
 
 
-      navigate("/");
+
+      await refreshDevelopers();
+
+
+
+      setShowDeleteModal(false);
+
+
+
+      navigate("/", {
+
+        state: {
+
+          notification: "Developer Deleted Successfully",
+
+        },
+
+      });
+
 
 
     } catch (error) {
@@ -119,64 +152,140 @@ function DeveloperDetails() {
 
 
 
+
+
   if (loading) {
+
     return <p>Loading...</p>;
+
   }
+
+
+
 
 
   if (error) {
+
     return <p>Error: {error}</p>;
+
   }
 
 
+
+
+
   if (!developer) {
+
     return (
+
       <div>
 
         <h1>
           Developer Not Found
         </h1>
 
+
         <p>
           The profile you are looking for does not exist.
         </p>
+
 
         <Link to="/">
           ← Back to Developers
         </Link>
 
+
       </div>
+
     );
+
   }
 
 
 
+
+
   return (
+
     <div className="profile-page">
 
 
-      <Link
-        to="/"
-        className="back-link"
-      >
-        ← Back to Developers
-      </Link>
+
+      {showDeleteModal && (
+
+        <ConfirmModal
+
+          title="Delete Developer?"
+
+          message={`Are you sure you want to delete ${developer.name}? This action cannot be undone.`}
+
+          confirmText="Delete"
+
+          cancelText="Cancel"
+
+          onCancel={() => setShowDeleteModal(false)}
+
+          onConfirm={handleDelete}
+
+        />
+
+      )}
 
 
-      <Link
-        to={`/developer/${developer.id}/edit`}
-        className="edit-link"
-      >
-        Edit Developer
-      </Link>
 
 
-      <button
-        className="delete-button"
-        onClick={handleDelete}
-      >
-        Delete Developer
-      </button>
+
+
+      <div className="profile-top-bar">
+
+
+        <Link
+          to="/"
+          className="back-link"
+        >
+
+          ← Back to Developers
+
+        </Link>
+
+
+
+
+
+        <div className="profile-actions">
+
+
+          <Link
+            to={`/developer/${developer.id}/edit`}
+            className="profile-button edit-button"
+          >
+
+            Edit Developer
+
+          </Link>
+
+
+
+
+
+          <button
+            className="profile-button delete-button"
+            onClick={() => setShowDeleteModal(true)}
+          >
+
+            Delete Developer
+
+          </button>
+
+
+
+        </div>
+
+
+
+      </div>
+
+
 
 
 
@@ -184,20 +293,33 @@ function DeveloperDetails() {
 
 
 
+
+
       <div className="profile-header">
+
 
         <div className="profile-avatar">
 
+
           {developer.avatar ? (
+
             <img
               src={developer.avatar}
               alt={developer.name}
             />
+
           ) : (
+
             developer.name.charAt(0)
+
           )}
 
+
+
         </div>
+
+
+
 
 
         <h1>
@@ -205,9 +327,15 @@ function DeveloperDetails() {
         </h1>
 
 
+
+
+
         <h2>
           {developer.title}
         </h2>
+
+
+
 
 
         <p className="profile-location">
@@ -215,56 +343,90 @@ function DeveloperDetails() {
         </p>
 
 
+
+
       </div>
 
 
 
+
+
+
+
       <div className="profile-section">
+
 
         <h3>
           Affiliation
         </h3>
 
+
+
         <p>
           {developer.affiliation}
         </p>
+
+
 
       </div>
 
 
 
+
+
+
+
       <div className="profile-section">
+
 
         <h3>
           Skills
         </h3>
 
 
+
+
+
         <ul className="skills-container">
 
+
           {developer.skills.map((skill) => (
+
 
             <li
               key={skill}
               className="skill-badge"
             >
+
               {skill}
+
             </li>
+
+
 
           ))}
 
+
+
         </ul>
+
 
 
       </div>
 
 
 
+
+
+
+
       <div className="profile-section">
+
 
         <h3>
           About
         </h3>
+
 
 
         <p>
@@ -272,11 +434,19 @@ function DeveloperDetails() {
         </p>
 
 
+
       </div>
 
 
+
+
+
+
     </div>
+
   );
+
 }
+
 
 export default DeveloperDetails;
