@@ -175,10 +175,13 @@ function EditDeveloper() {
 
 
       navigate(`/developer/${id}`, {
-        state: {
-          notification: "Developer Updated Successfully",
-        },
-      });
+  state: {
+    notification: {
+      message: "Developer Updated Successfully",
+      type: "success",
+    },
+  },
+});
 
 
     } catch (error) {

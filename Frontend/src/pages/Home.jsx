@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import SearchBar from "../components/SearchBar";
-import LocationFilter from "../components/LocationFilter";
-import SortDropdown from "../components/SortDropdown";
 import DeveloperList from "../components/DeveloperList";
 import { useDeveloperContext } from "../context/DeveloperContext";
 import SkeletonList from "../components/SkeletonList";
@@ -60,7 +57,9 @@ function Home() {
 
 
 
+
   const developersPerPage = 9;
+
 
 
 
@@ -75,14 +74,18 @@ function Home() {
 
 
 
+
   const locations = [
-    "All",
-    ...new Set(
-      developers.map((developer) =>
-        developer.location.split(",")[0]
+  "All",
+  ...new Set(
+    developers
+      .map((developer) =>
+        developer.location?.split(",")[0].trim()
       )
-    ),
-  ];
+      .filter(Boolean)
+  ),
+];
+
 
 
 
@@ -106,6 +109,8 @@ function Home() {
     return matchesLocation && matchesSearch;
 
   });
+
+
 
 
 
@@ -139,6 +144,9 @@ function Home() {
 
 
 
+
+
+
   const indexOfLastDeveloper =
     currentPage * developersPerPage;
 
@@ -146,6 +154,7 @@ function Home() {
 
   const indexOfFirstDeveloper =
     indexOfLastDeveloper - developersPerPage;
+
 
 
 
@@ -159,9 +168,12 @@ function Home() {
 
 
 
+
   const totalPages = Math.ceil(
     sortedDevelopers.length / developersPerPage
   );
+
+
 
 
 
@@ -177,11 +189,15 @@ function Home() {
 
 
 
+
+
   if (error) {
 
     return <p>Error: {error}</p>;
 
   }
+
+
 
 
 
@@ -196,11 +212,12 @@ function Home() {
       {notification && (
 
         <Notification
-          message={notification}
-          type="success"
+          message={notification.message}
+          type={notification.type}
         />
 
       )}
+
 
 
 
@@ -216,6 +233,7 @@ function Home() {
         sortBy={sortBy}
         setSortBy={setSortBy}
       />
+
 
 
 
@@ -294,6 +312,7 @@ function Home() {
 
 
       </div>
+
 
 
 

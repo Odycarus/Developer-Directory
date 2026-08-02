@@ -1,8 +1,9 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/DeveloperDetails.css";
 import { useDeveloperContext } from "../context/DeveloperContext";
 import ConfirmModal from "../components/ConfirmModal";
+import Notification from "../components/Notification";
 
 
 function DeveloperDetails() {
@@ -11,7 +12,14 @@ function DeveloperDetails() {
 
   const navigate = useNavigate();
 
+  const location = useLocation();
+
   const { refreshDevelopers } = useDeveloperContext();
+
+
+  const notification =
+    location.state?.notification;
+
 
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -20,6 +28,8 @@ function DeveloperDetails() {
   const [developer, setDeveloper] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+
 
 
 
@@ -69,6 +79,7 @@ function DeveloperDetails() {
 
 
 
+
   useEffect(() => {
 
     if (developer) {
@@ -93,6 +104,35 @@ function DeveloperDetails() {
 
 
   }, [developer]);
+
+
+
+
+
+
+
+  useEffect(() => {
+
+    if (notification) {
+
+      const timer = setTimeout(() => {
+
+        navigate(`/developer/${id}`, {
+          replace: true,
+          state: {},
+        });
+
+      }, 3000);
+
+
+      return () => clearTimeout(timer);
+
+    }
+
+
+  }, [notification, navigate, id]);
+
+
 
 
 
@@ -134,7 +174,10 @@ function DeveloperDetails() {
 
         state: {
 
-          notification: "Developer Deleted Successfully",
+          notification: {
+            message: "Developer Deleted Successfully",
+            type: "success",
+          },
 
         },
 
@@ -154,6 +197,8 @@ function DeveloperDetails() {
 
 
 
+
+
   if (loading) {
 
     return <p>Loading...</p>;
@@ -164,11 +209,15 @@ function DeveloperDetails() {
 
 
 
+
+
   if (error) {
 
     return <p>Error: {error}</p>;
 
   }
+
+
 
 
 
@@ -205,9 +254,30 @@ function DeveloperDetails() {
 
 
 
+
+
+
   return (
 
     <div className="profile-page">
+
+
+
+      {notification && (
+
+        <Notification
+
+          message={notification.message}
+
+          type={notification.type}
+
+        />
+
+      )}
+
+
+
+
 
 
 
@@ -236,12 +306,17 @@ function DeveloperDetails() {
 
 
 
+
+
       <div className="profile-top-bar">
 
 
         <Link
+
           to="/"
+
           className="back-link"
+
         >
 
           ← Back to Developers
@@ -252,12 +327,18 @@ function DeveloperDetails() {
 
 
 
+
+
         <div className="profile-actions">
 
 
+
           <Link
+
             to={`/developer/${developer.id}/edit`}
+
             className="profile-button edit-button"
+
           >
 
             Edit Developer
@@ -268,9 +349,14 @@ function DeveloperDetails() {
 
 
 
+
+
           <button
+
             className="profile-button delete-button"
+
             onClick={() => setShowDeleteModal(true)}
+
           >
 
             Delete Developer
@@ -289,7 +375,11 @@ function DeveloperDetails() {
 
 
 
+
+
       <hr />
+
+
 
 
 
@@ -298,14 +388,19 @@ function DeveloperDetails() {
       <div className="profile-header">
 
 
+
         <div className="profile-avatar">
+
 
 
           {developer.avatar ? (
 
             <img
+
               src={developer.avatar}
+
               alt={developer.name}
+
             />
 
           ) : (
@@ -322,25 +417,38 @@ function DeveloperDetails() {
 
 
 
+
+
         <h1>
+
           {developer.name}
+
         </h1>
 
 
 
 
 
+
+
         <h2>
+
           {developer.title}
+
         </h2>
 
 
 
 
 
+
+
         <p className="profile-location">
+
           {developer.location}
+
         </p>
+
 
 
 
@@ -353,17 +461,23 @@ function DeveloperDetails() {
 
 
 
+
+
       <div className="profile-section">
 
 
         <h3>
+
           Affiliation
+
         </h3>
 
 
 
         <p>
+
           {developer.affiliation}
+
         </p>
 
 
@@ -376,12 +490,18 @@ function DeveloperDetails() {
 
 
 
+
+
       <div className="profile-section">
 
 
         <h3>
+
           Skills
+
         </h3>
+
+
 
 
 
@@ -390,12 +510,17 @@ function DeveloperDetails() {
         <ul className="skills-container">
 
 
+
           {developer.skills.map((skill) => (
 
 
+
             <li
+
               key={skill}
+
               className="skill-badge"
+
             >
 
               {skill}
@@ -420,17 +545,23 @@ function DeveloperDetails() {
 
 
 
+
+
       <div className="profile-section">
 
 
         <h3>
+
           About
+
         </h3>
 
 
 
         <p>
+
           {developer.description}
+
         </p>
 
 
