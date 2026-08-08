@@ -8,6 +8,7 @@ class DeveloperSerializer(serializers.ModelSerializer):
     class Meta:
         model = Developer
         fields = "__all__"
+        read_only_fields = ["owner"]
 
     def to_representation(self, instance):
 
