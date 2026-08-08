@@ -7,6 +7,7 @@ import Counter from "./components/Counter";
 import RubberDuck from "./components/RubberDuck";
 import AddDeveloper from "./pages/AddDeveloper";
 import EditDeveloper from "./pages/EditDeveloper";
+import Login from "./pages/Login";
 
 
 function App() {
@@ -18,7 +19,14 @@ function App() {
 
       <Routes>
 
-        <Route path="/" element={<Home />} />
+        <Route path="/" 
+        element={<Home />} 
+        />
+
+        <Route
+        path="/login"
+        element={<Login />}
+        />
 
         <Route
           path="/developer/:id"

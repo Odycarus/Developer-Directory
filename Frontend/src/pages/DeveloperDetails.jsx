@@ -1,8 +1,20 @@
-import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
+import {
+  useParams,
+  Link,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+
 import { useEffect, useState } from "react";
+
 import "../styles/DeveloperDetails.css";
+
 import { useDeveloperContext } from "../context/DeveloperContext";
+
+import { useAuth } from "../context/AuthContext";
+
 import ConfirmModal from "../components/ConfirmModal";
+
 import Notification from "../components/Notification";
 
 
@@ -16,21 +28,27 @@ function DeveloperDetails() {
 
   const { refreshDevelopers } = useDeveloperContext();
 
+  const { accessToken } = useAuth();
+
 
   const notification =
     location.state?.notification;
 
 
+  const [showDeleteModal, setShowDeleteModal] =
+    useState(false);
 
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [developer, setDeveloper] =
+    useState(null);
 
+  const [loading, setLoading] =
+    useState(true);
 
-  const [developer, setDeveloper] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] =
+    useState(null);
 
-
-
+  const [permissionError, setPermissionError] =
+    useState(null);
 
 
   useEffect(() => {
@@ -46,12 +64,16 @@ function DeveloperDetails() {
 
         if (!response.ok) {
 
-          throw new Error("Developer not found.");
+          throw new Error(
+            "Developer not found."
+          );
 
         }
 
 
-        const data = await response.json();
+        const data =
+          await response.json();
+
 
         setDeveloper(data);
 
@@ -72,12 +94,7 @@ function DeveloperDetails() {
 
     fetchDeveloper();
 
-
   }, [id]);
-
-
-
-
 
 
   useEffect(() => {
@@ -102,72 +119,89 @@ function DeveloperDetails() {
 
     };
 
-
   }, [developer]);
-
-
-
-
-
 
 
   useEffect(() => {
 
     if (notification) {
 
-      const timer = setTimeout(() => {
+      const timer =
+        setTimeout(() => {
 
-        navigate(`/developer/${id}`, {
-          replace: true,
-          state: {},
-        });
+          navigate(
+            `/developer/${id}`,
+            {
+              replace: true,
+              state: {},
+            }
+          );
 
-      }, 3000);
+        }, 3000);
 
 
-      return () => clearTimeout(timer);
+      return () =>
+        clearTimeout(timer);
 
     }
 
-
-  }, [notification, navigate, id]);
-
-
-
-
-
-
+  }, [
+    notification,
+    navigate,
+    id,
+  ]);
 
 
   async function handleDelete() {
 
+    setPermissionError(null);
+
 
     try {
 
+      const response =
+        await fetch(
+          `http://127.0.0.1:8000/api/developers/${id}/`,
+          {
+            method: "DELETE",
 
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/developers/${id}/`,
-        {
-          method: "DELETE",
-        }
-      );
+            headers: {
+              Authorization:
+                `Bearer ${accessToken}`,
+            },
+          }
+        );
 
+
+      if (
+        response.status === 401 ||
+        response.status === 403
+      ) {
+
+        setShowDeleteModal(false);
+
+        setPermissionError(
+          "You are not permitted to do this."
+        );
+
+        return;
+
+      }
 
 
       if (!response.ok) {
 
-        throw new Error("Failed to delete developer.");
+        throw new Error(
+          "Failed to delete developer."
+        );
 
       }
-
 
 
       await refreshDevelopers();
 
 
-
       setShowDeleteModal(false);
-
 
 
       navigate("/", {
@@ -175,8 +209,12 @@ function DeveloperDetails() {
         state: {
 
           notification: {
-            message: "Developer Deleted Successfully",
+
+            message:
+              "Developer Deleted Successfully",
+
             type: "success",
+
           },
 
         },
@@ -184,19 +222,19 @@ function DeveloperDetails() {
       });
 
 
-
     } catch (error) {
 
       console.error(error);
 
+      setShowDeleteModal(false);
+
+      setPermissionError(
+        "No."
+      );
+
     }
 
   }
-
-
-
-
-
 
 
   if (loading) {
@@ -206,21 +244,15 @@ function DeveloperDetails() {
   }
 
 
-
-
-
-
-
   if (error) {
 
-    return <p>Error: {error}</p>;
+    return (
+      <p>
+        Error: {error}
+      </p>
+    );
 
   }
-
-
-
-
-
 
 
   if (!developer) {
@@ -235,14 +267,14 @@ function DeveloperDetails() {
 
 
         <p>
-          The profile you are looking for does not exist.
+          The profile you are looking for
+          does not exist.
         </p>
 
 
         <Link to="/">
           ← Back to Developers
         </Link>
-
 
       </div>
 
@@ -251,34 +283,41 @@ function DeveloperDetails() {
   }
 
 
-
-
-
-
-
-
   return (
 
     <div className="profile-page">
-
 
 
       {notification && (
 
         <Notification
 
-          message={notification.message}
+          message={
+            notification.message
+          }
 
-          type={notification.type}
+          type={
+            notification.type
+          }
 
         />
 
       )}
 
 
+      {permissionError && (
 
+        <Notification
 
+          message={
+            permissionError
+          }
 
+          type="error"
+
+        />
+
+      )}
 
 
       {showDeleteModal && (
@@ -287,25 +326,23 @@ function DeveloperDetails() {
 
           title="Delete Developer?"
 
-          message={`Are you sure you want to delete ${developer.name}? This action cannot be undone.`}
+          message={
+            `Are you sure you want to delete ${developer.name}? This action cannot be undone.`
+          }
 
           confirmText="Delete"
 
           cancelText="Cancel"
 
-          onCancel={() => setShowDeleteModal(false)}
+          onCancel={() =>
+            setShowDeleteModal(false)
+          }
 
           onConfirm={handleDelete}
 
         />
 
       )}
-
-
-
-
-
-
 
 
       <div className="profile-top-bar">
@@ -324,13 +361,7 @@ function DeveloperDetails() {
         </Link>
 
 
-
-
-
-
-
         <div className="profile-actions">
-
 
 
           <Link
@@ -346,16 +377,13 @@ function DeveloperDetails() {
           </Link>
 
 
-
-
-
-
-
           <button
 
             className="profile-button delete-button"
 
-            onClick={() => setShowDeleteModal(true)}
+            onClick={() =>
+              setShowDeleteModal(true)
+            }
 
           >
 
@@ -364,33 +392,18 @@ function DeveloperDetails() {
           </button>
 
 
-
         </div>
 
-
-
       </div>
-
-
-
-
-
 
 
       <hr />
 
 
-
-
-
-
-
       <div className="profile-header">
 
 
-
         <div className="profile-avatar">
-
 
 
           {developer.avatar ? (
@@ -410,37 +423,17 @@ function DeveloperDetails() {
           )}
 
 
-
         </div>
 
 
-
-
-
-
-
         <h1>
-
           {developer.name}
-
         </h1>
 
 
-
-
-
-
-
         <h2>
-
           {developer.title}
-
         </h2>
-
-
-
-
-
 
 
         <p className="profile-location">
@@ -450,127 +443,107 @@ function DeveloperDetails() {
         </p>
 
 
-
-
-
       </div>
-
-
-
-
-
-
-
 
 
       <div className="profile-section">
 
 
         <h3>
-
           Affiliation
-
         </h3>
-
 
 
         <p>
-
           {developer.affiliation}
-
         </p>
 
 
-
       </div>
-
-
-
-
-
-
-
 
 
       <div className="profile-section">
 
 
         <h3>
-
           Skills
-
         </h3>
-
-
-
-
-
 
 
         <ul className="skills-container">
 
 
+          {developer.skills.map(
+            (skill) => (
 
-          {developer.skills.map((skill) => (
+              <li
 
+                key={skill}
 
+                className="skill-badge"
 
-            <li
+              >
 
-              key={skill}
+                {skill}
 
-              className="skill-badge"
+              </li>
 
-            >
-
-              {skill}
-
-            </li>
-
-
-
-          ))}
-
+            )
+          )}
 
 
         </ul>
 
 
-
       </div>
-
-
-
-
-
-
-
 
 
       <div className="profile-section">
 
 
         <h3>
-
           About
-
         </h3>
 
 
-
         <p>
-
           {developer.description}
-
         </p>
-
 
 
       </div>
 
 
+      <div className="profile-contact">
 
 
+        <div>
+
+          <strong>
+            Email
+          </strong>
+
+          <p>
+            {developer.email}
+          </p>
+
+        </div>
+
+
+        <div>
+
+          <strong>
+            Phone
+          </strong>
+
+          <p>
+            {developer.phone}
+          </p>
+
+        </div>
+
+
+      </div>
 
 
     </div>

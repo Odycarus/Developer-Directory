@@ -7,12 +7,14 @@ function DeveloperForm({
   buttonText,
   errors = {},
 }) {
+  const isFormValid =
+    formData.name.trim() &&
+    formData.title.trim() &&
+    formData.affiliation.trim() &&
+    formData.email.trim() &&
+    formData.phone.trim() &&
+    formData.skills.trim();
 
-const isFormValid =
-  formData.name.trim() &&
-  formData.title.trim() &&
-  formData.affiliation.trim() &&
-  formData.skills.trim();
   return (
     <form onSubmit={handleSubmit}>
 
@@ -40,7 +42,6 @@ const isFormValid =
       )}
 
 
-
       <label htmlFor="title">
         Title *
       </label>
@@ -58,7 +59,6 @@ const isFormValid =
           {errors.title}
         </p>
       )}
-
 
 
       <label htmlFor="affiliation">
@@ -80,7 +80,6 @@ const isFormValid =
       )}
 
 
-
       <label htmlFor="location">
         Location
       </label>
@@ -93,6 +92,45 @@ const isFormValid =
         onChange={handleChange}
       />
 
+
+      <label htmlFor="email">
+        Email *
+      </label>
+
+      <input
+        id="email"
+        type="email"
+        name="email"
+        placeholder="developer@example.com"
+        value={formData.email}
+        onChange={handleChange}
+      />
+
+      {errors.email && (
+        <p className="form-error">
+          {errors.email}
+        </p>
+      )}
+
+
+      <label htmlFor="phone">
+        Phone *
+      </label>
+
+      <input
+        id="phone"
+        type="tel"
+        name="phone"
+        placeholder="+971 50 123 4567"
+        value={formData.phone}
+        onChange={handleChange}
+      />
+
+      {errors.phone && (
+        <p className="form-error">
+          {errors.phone}
+        </p>
+      )}
 
 
       <label htmlFor="skills">
@@ -114,7 +152,6 @@ const isFormValid =
       )}
 
 
-
       <label htmlFor="description">
         Description
       </label>
@@ -126,7 +163,6 @@ const isFormValid =
         value={formData.description}
         onChange={handleChange}
       />
-
 
 
       <label htmlFor="avatar">
@@ -142,19 +178,16 @@ const isFormValid =
       />
 
 
-
       <button
-  type="submit"
-  className={`form-button ${isFormValid ? "active" : ""}`}
-  disabled={!isFormValid}
->
-  {buttonText}
+        type="submit"
+        className={`form-button ${isFormValid ? "active" : ""}`}
+        disabled={!isFormValid}
+      >
+        {buttonText}
       </button>
-
 
     </form>
   );
 }
-
 
 export default DeveloperForm;
