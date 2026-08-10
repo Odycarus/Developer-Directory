@@ -1,12 +1,9 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework_simplejwt.views import TokenObtainPairView
-
 from django.contrib.auth.models import User
-
 from .models import Developer
-from .serializers import DeveloperSerializer, RegisterSerializer
-
+from .serializers import DeveloperSerializer, RegisterSerializer, LoginSerializer
 from .permissions import IsOwnerOrReadOnly
 
 
@@ -36,5 +33,4 @@ class RegisterView(generics.CreateAPIView):
 
 
 class LoginView(TokenObtainPairView):
-
-    pass
+    serializer_class = LoginSerializer

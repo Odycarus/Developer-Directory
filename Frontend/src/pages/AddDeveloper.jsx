@@ -147,7 +147,7 @@ function AddDeveloper() {
       console.error(error);
 
       setNotification({
-        message: "No.",
+        message: "You already have an account.",
         type: "error",
       });
     }
