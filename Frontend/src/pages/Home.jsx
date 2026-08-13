@@ -1,10 +1,19 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 import DeveloperList from "../components/DeveloperList";
-import { useDeveloperContext } from "../context/DeveloperContext";
+
+import {
+  useDeveloperContext,
+} from "../context/DeveloperContext";
+
 import SkeletonList from "../components/SkeletonList";
+
 import DeveloperControls from "../components/DeveloperControls";
+
 import Notification from "../components/Notification";
 
 import "../styles/Home.css";
@@ -12,26 +21,51 @@ import "../styles/Home.css";
 
 function Home() {
 
+
   const {
     developers,
     loading,
-    error
+    error,
   } = useDeveloperContext();
 
 
-  const [selectedLocation, setSelectedLocation] = useState("All");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("name");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [
+    selectedLocation,
+    setSelectedLocation,
+  ] = useState("All");
+
+
+  const [
+    selectedSkills,
+    setSelectedSkills,
+  ] = useState([]);
+
+
+  const [
+    searchTerm,
+    setSearchTerm,
+  ] = useState("");
+
+
+  const [
+    sortBy,
+    setSortBy,
+  ] = useState("name");
+
+
+  const [
+    currentPage,
+    setCurrentPage,
+  ] = useState(1);
 
 
   const location = useLocation();
+
   const navigate = useNavigate();
 
 
   const notification =
     location.state?.notification;
-
 
 
   useEffect(() => {
@@ -48,135 +82,182 @@ function Home() {
       }, 3000);
 
 
-      return () => clearTimeout(timer);
+      return () =>
+        clearTimeout(timer);
 
     }
 
-  }, [notification, navigate]);
-
-
-
+  }, [
+    notification,
+    navigate,
+  ]);
 
 
   const developersPerPage = 9;
-
-
-
 
 
   useEffect(() => {
 
     setCurrentPage(1);
 
-  }, [searchTerm, selectedLocation, sortBy]);
-
-
-
-
+  }, [
+    searchTerm,
+    selectedLocation,
+    selectedSkills,
+    sortBy,
+  ]);
 
 
   const locations = [
-  "All",
-  ...new Set(
-    developers
-      .map((developer) =>
-        developer.location?.split(",")[0].trim()
-      )
-      .filter(Boolean)
-  ),
-];
+
+    "All",
+
+    ...new Set(
+
+      developers
+
+        .map(
+          (developer) =>
+            developer.location
+              ?.split(",")[0]
+              .trim()
+        )
+
+        .filter(Boolean)
+
+    ),
+
+  ];
 
 
+  const skills = [
+
+    ...new Set(
+
+      developers
+
+        .flatMap(
+          (developer) =>
+            developer.skills || []
+        )
+
+        .map(
+          (skill) =>
+            skill.trim()
+        )
+
+        .filter(Boolean)
+
+    ),
+
+  ].sort();
 
 
+  const filteredDevelopers =
+    developers.filter(
+      (developer) => {
 
 
-  const filteredDevelopers = developers.filter((developer) => {
-
-    const matchesLocation =
-      selectedLocation === "All" ||
-      developer.location.includes(selectedLocation);
-
-
-
-    const matchesSearch =
-      developer.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+        const matchesLocation =
+          selectedLocation === "All" ||
+          developer.location
+            ?.includes(
+              selectedLocation
+            );
 
 
-
-    return matchesLocation && matchesSearch;
-
-  });
-
-
-
-
+        const matchesSearch =
+          developer.name
+            .toLowerCase()
+            .includes(
+              searchTerm.toLowerCase()
+            );
 
 
-
-  const sortedDevelopers = [...filteredDevelopers].sort((a, b) => {
-
-    switch(sortBy) {
-
-      case "affiliation":
-
-        return a.title.localeCompare(b.title);
-
-
-
-      case "location":
-
-        return a.location.localeCompare(b.location);
-
-
-
-      default:
-
-        return a.name.localeCompare(b.name);
-
-    }
-
-  });
+        const matchesSkills =
+          selectedSkills.length === 0 ||
+          selectedSkills.every(
+            (selectedSkill) =>
+              developer.skills?.some(
+                (developerSkill) =>
+                  developerSkill
+                    .toLowerCase()
+                    .trim() ===
+                  selectedSkill
+                    .toLowerCase()
+                    .trim()
+              )
+          );
 
 
+        return (
+          matchesLocation &&
+          matchesSearch &&
+          matchesSkills
+        );
+
+      }
+    );
 
 
+  const sortedDevelopers =
+    [...filteredDevelopers].sort(
+      (a, b) => {
 
 
+        switch (sortBy) {
+
+
+          case "affiliation":
+
+            return a.title.localeCompare(
+              b.title
+            );
+
+
+          case "location":
+
+            return (
+              a.location || ""
+            ).localeCompare(
+              b.location || ""
+            );
+
+
+          default:
+
+            return a.name.localeCompare(
+              b.name
+            );
+
+        }
+
+      }
+    );
 
 
   const indexOfLastDeveloper =
-    currentPage * developersPerPage;
-
+    currentPage *
+    developersPerPage;
 
 
   const indexOfFirstDeveloper =
-    indexOfLastDeveloper - developersPerPage;
+    indexOfLastDeveloper -
+    developersPerPage;
 
 
+  const currentDevelopers =
+    sortedDevelopers.slice(
+      indexOfFirstDeveloper,
+      indexOfLastDeveloper
+    );
 
 
-
-  const currentDevelopers = sortedDevelopers.slice(
-    indexOfFirstDeveloper,
-    indexOfLastDeveloper
-  );
-
-
-
-
-
-
-  const totalPages = Math.ceil(
-    sortedDevelopers.length / developersPerPage
-  );
-
-
-
-
-
+  const totalPages =
+    Math.ceil(
+      sortedDevelopers.length /
+      developersPerPage
+    );
 
 
   if (loading) {
@@ -186,21 +267,15 @@ function Home() {
   }
 
 
-
-
-
-
-
   if (error) {
 
-    return <p>Error: {error}</p>;
+    return (
+      <p>
+        Error: {error}
+      </p>
+    );
 
   }
-
-
-
-
-
 
 
   return (
@@ -208,43 +283,65 @@ function Home() {
     <div>
 
 
-
       {notification && (
 
         <Notification
-          message={notification.message}
-          type={notification.type}
+          message={
+            notification.message
+          }
+          type={
+            notification.type
+          }
         />
 
       )}
 
 
-
-
-
-
-
       <DeveloperControls
+
         searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
+
+        setSearchTerm={
+          setSearchTerm
+        }
+
+
         locations={locations}
-        selectedLocation={selectedLocation}
-        setSelectedLocation={setSelectedLocation}
+
+        selectedLocation={
+          selectedLocation
+        }
+
+        setSelectedLocation={
+          setSelectedLocation
+        }
+
+
+        skills={skills}
+
+        selectedSkills={
+          selectedSkills
+        }
+
+        setSelectedSkills={
+          setSelectedSkills
+        }
+
+
         sortBy={sortBy}
+
         setSortBy={setSortBy}
+
       />
-
-
-
-
-
 
 
       {
         currentDevelopers.length > 0 ? (
 
           <DeveloperList
-            developers={currentDevelopers}
+            developers={
+              currentDevelopers
+            }
           />
 
         ) : (
@@ -255,11 +352,10 @@ function Home() {
               No developers found.
             </h2>
 
-
             <p>
-              Try adjusting your search or filters.
+              Try adjusting your
+              search or filters.
             </p>
-
 
           </div>
 
@@ -267,54 +363,46 @@ function Home() {
       }
 
 
-
-
-
-
-
       <div className="pagination">
 
 
         <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
+          onClick={() =>
+            setCurrentPage(
+              currentPage - 1
+            )
+          }
+          disabled={
+            currentPage === 1
+          }
         >
-
           Previous
-
         </button>
-
-
-
 
 
         <span>
 
-          Page {currentPage} of {totalPages}
+          Page {currentPage} of{" "}
+          {totalPages}
 
         </span>
 
 
-
-
-
         <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
+          onClick={() =>
+            setCurrentPage(
+              currentPage + 1
+            )
+          }
+          disabled={
+            currentPage === totalPages
+          }
         >
-
           Next
-
         </button>
 
 
-
-
-
       </div>
-
-
-
 
 
     </div>

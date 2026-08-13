@@ -1,9 +1,7 @@
 function SortDropdown({ sortBy, setSortBy }) {
   return (
     <div>
-      <label>
-        Sort By:
-      </label>
+      
 
       <select
         value={sortBy}

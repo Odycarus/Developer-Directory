@@ -3,17 +3,34 @@ function LocationFilter({
   selectedLocation,
   setSelectedLocation,
 }) {
+
   return (
-    <select
-      value={selectedLocation}
-      onChange={(e) => setSelectedLocation(e.target.value)}
-    >
-      {locations.map((location) => (
-        <option key={location} value={location}>
-          {location}
-        </option>
-      ))}
-    </select>
+    <div className="location-filter">
+
+      <label htmlFor="location-filter">
+        Location
+      </label>
+
+      <select
+        id="location-filter"
+        value={selectedLocation}
+        onChange={(event) =>
+          setSelectedLocation(event.target.value)
+        }
+      >
+
+        {locations.map((location) => (
+          <option
+            key={location}
+            value={location}
+          >
+            {location}
+          </option>
+        ))}
+
+      </select>
+
+    </div>
   );
 }
 
