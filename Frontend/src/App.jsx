@@ -1,4 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import DeveloperDetails from "./pages/DeveloperDetails";
@@ -7,57 +12,80 @@ import Counter from "./components/Counter";
 import RubberDuck from "./components/RubberDuck";
 import AddDeveloper from "./pages/AddDeveloper";
 import EditDeveloper from "./pages/EditDeveloper";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
-
+import Register from "./pages/Register";
 
 function App() {
 
   return (
+
     <BrowserRouter>
 
       <Navbar />
 
       <Routes>
 
-        <Route path="/" 
-        element={<Home />} 
+        <Route
+          path="/"
+          element={<Home />}
         />
 
-        <Route
-        path="/login"
-        element={<Login />}
-        />
 
         <Route
           path="/developer/:id"
           element={<DeveloperDetails />}
         />
-        
+
+
         <Route
           path="/counter"
           element={<Counter />}
         />
+
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+        
         <Route
           path="/add-developer"
-          element={<AddDeveloper />}
+          element={
+            <ProtectedRoute>
+              <AddDeveloper />
+            </ProtectedRoute>
+          }
         />
+
+
         <Route
           path="/developer/:id/edit"
-          element={<EditDeveloper />}
+          element={
+            <ProtectedRoute>
+              <EditDeveloper />
+            </ProtectedRoute>
+          }
         />
+
+
         <Route
           path="*"
           element={<NotFound />}
         />
 
-
       </Routes>
 
-              <RubberDuck />
+
+      <RubberDuck />
 
     </BrowserRouter>
+
   );
 }
-
 
 export default App;

@@ -1,10 +1,10 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.models import User
 from .models import Developer
 from .serializers import DeveloperSerializer, RegisterSerializer, LoginSerializer
 from .permissions import IsOwnerOrReadOnly
+from rest_framework.response import Response
 
 
 class DeveloperList(generics.ListCreateAPIView):
@@ -31,6 +31,18 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
 
+class LoginView(generics.CreateAPIView):
 
-class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
+
+    def post(self, request, *args, **kwargs):
+
+        serializer = self.get_serializer(
+            data=request.data
+        )
+
+        serializer.is_valid(raise_exception=True)
+
+        return Response(
+            serializer.validated_data
+        )

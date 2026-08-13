@@ -3,55 +3,25 @@ import { createContext, useContext, useState } from "react";
 const AuthContext = createContext();
 
 
-function decodeToken(token) {
-
-  try {
-
-    const payload = token.split(".")[1];
-
-    const decodedPayload = atob(
-      payload.replace(/-/g, "+").replace(/_/g, "/")
-    );
-
-    return JSON.parse(decodedPayload);
-
-  } catch (error) {
-
-    console.error("Failed to decode token:", error);
-
-    return null;
-
-  }
-
-}
-
-
 export function AuthProvider({ children }) {
 
   const [accessToken, setAccessToken] = useState(
     localStorage.getItem("accessToken")
   );
 
-
   const [refreshToken, setRefreshToken] = useState(
     localStorage.getItem("refreshToken")
   );
-
 
   const [user, setUser] = useState(
     localStorage.getItem("username")
   );
 
 
-  const [isAdmin, setIsAdmin] = useState(
-    localStorage.getItem("isAdmin") === "true"
-  );
-
-
   const isAuthenticated = !!accessToken;
 
 
-  async function login(username, password) {
+  async function login(usernameOrEmail, password) {
 
     const response = await fetch(
       "http://127.0.0.1:8000/api/developers/login/",
@@ -63,7 +33,7 @@ export function AuthProvider({ children }) {
         },
 
         body: JSON.stringify({
-          username,
+          username_or_email: usernameOrEmail,
           password,
         }),
       }
@@ -72,23 +42,18 @@ export function AuthProvider({ children }) {
 
     if (!response.ok) {
 
+      const data = await response.json();
+
       throw new Error(
-        "Invalid username or password."
+        data.detail ||
+        data.non_field_errors?.[0] ||
+        "Invalid username or email or password."
       );
 
     }
 
 
     const data = await response.json();
-
-
-    const tokenData = decodeToken(
-      data.access
-    );
-
-
-    const adminStatus =
-      tokenData?.is_admin === true;
 
 
     localStorage.setItem(
@@ -101,45 +66,38 @@ export function AuthProvider({ children }) {
       data.refresh
     );
 
-    localStorage.setItem(
-      "username",
-      username
-    );
-
-    localStorage.setItem(
-      "isAdmin",
-      adminStatus
-    );
-
 
     setAccessToken(data.access);
 
     setRefreshToken(data.refresh);
 
-    setUser(username);
 
-    setIsAdmin(adminStatus);
+    /*
+      We don't have the username directly
+      from the login response, so for now
+      store what the user typed.
+
+      We'll improve this when we add proper
+      user information handling.
+    */
+
+    localStorage.setItem(
+      "username",
+      usernameOrEmail
+    );
+
+    setUser(usernameOrEmail);
 
   }
 
 
   function logout() {
 
-    localStorage.removeItem(
-      "accessToken"
-    );
+    localStorage.removeItem("accessToken");
 
-    localStorage.removeItem(
-      "refreshToken"
-    );
+    localStorage.removeItem("refreshToken");
 
-    localStorage.removeItem(
-      "username"
-    );
-
-    localStorage.removeItem(
-      "isAdmin"
-    );
+    localStorage.removeItem("username");
 
 
     setAccessToken(null);
@@ -147,8 +105,6 @@ export function AuthProvider({ children }) {
     setRefreshToken(null);
 
     setUser(null);
-
-    setIsAdmin(false);
 
   }
 
@@ -161,7 +117,6 @@ export function AuthProvider({ children }) {
         refreshToken,
         user,
         isAuthenticated,
-        isAdmin,
         login,
         logout,
       }}
