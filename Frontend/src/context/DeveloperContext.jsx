@@ -5,6 +5,8 @@ import {
   useEffect,
 } from "react";
 
+import { apiFetch } from "../api/api";
+
 
 const DeveloperContext = createContext();
 
@@ -27,18 +29,10 @@ export function DeveloperProvider({ children }) {
 
       setLoading(true);
 
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/developers/"
+
+      const response = await apiFetch(
+        "/developers/"
       );
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          "Failed to fetch developers."
-        );
-
-      }
 
 
       const data =

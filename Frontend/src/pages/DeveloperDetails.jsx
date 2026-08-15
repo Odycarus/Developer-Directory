@@ -11,6 +11,10 @@ import "../styles/DeveloperDetails.css";
 
 import { useDeveloperContext } from "../context/DeveloperContext";
 
+import { useAuth } from "../context/AuthContext";
+
+import { apiFetch } from "../api/api";
+
 import ConfirmModal from "../components/ConfirmModal";
 
 import Notification from "../components/Notification";
@@ -24,8 +28,13 @@ function DeveloperDetails() {
 
   const location = useLocation();
 
+
   const { refreshDevelopers } =
     useDeveloperContext();
+
+
+  const { accessToken } =
+    useAuth();
 
 
   const notification =
@@ -48,24 +57,20 @@ function DeveloperDetails() {
     useState(null);
 
 
+  const [deleteNotification, setDeleteNotification] =
+    useState(null);
+
+
+
   useEffect(() => {
 
     async function fetchDeveloper() {
 
       try {
 
-        const response = await fetch(
-          `http://127.0.0.1:8000/api/developers/${id}/`
+        const response = await apiFetch(
+          `/developers/${id}/`
         );
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            "Developer not found."
-          );
-
-        }
 
 
         const data =
@@ -77,7 +82,10 @@ function DeveloperDetails() {
 
       } catch (err) {
 
-        setError(err.message);
+        setError(
+          err.data?.detail ||
+          "Developer not found."
+        );
 
       } finally {
 
@@ -91,6 +99,7 @@ function DeveloperDetails() {
     fetchDeveloper();
 
   }, [id]);
+
 
 
   useEffect(() => {
@@ -118,16 +127,20 @@ function DeveloperDetails() {
   }, [developer]);
 
 
+
   useEffect(() => {
 
     if (notification) {
 
       const timer = setTimeout(() => {
 
-        navigate(`/developer/${id}`, {
-          replace: true,
-          state: {},
-        });
+        navigate(
+          `/developer/${id}`,
+          {
+            replace: true,
+            state: {},
+          }
+        );
 
       }, 3000);
 
@@ -144,25 +157,25 @@ function DeveloperDetails() {
   ]);
 
 
+
   async function handleDelete() {
 
     try {
 
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/developers/${id}/`,
+      setDeleteNotification(null);
+
+
+      await apiFetch(
+
+        `/developers/${id}/`,
+
         {
           method: "DELETE",
-        }
+        },
+
+        accessToken
+
       );
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          "Failed to delete developer."
-        );
-
-      }
 
 
       await refreshDevelopers();
@@ -176,10 +189,12 @@ function DeveloperDetails() {
         state: {
 
           notification: {
+
             message:
               "Developer Deleted Successfully",
 
             type: "success",
+
           },
 
         },
@@ -191,9 +206,42 @@ function DeveloperDetails() {
 
       console.error(error);
 
+
+      setShowDeleteModal(false);
+
+
+      if (
+        error.status === 401 ||
+        error.status === 403
+      ) {
+
+        setDeleteNotification({
+
+          message:
+            "You are not permitted to do this.",
+
+          type: "error",
+
+        });
+
+        return;
+
+      }
+
+
+      setDeleteNotification({
+
+        message:
+          "Failed to delete developer.",
+
+        type: "error",
+
+      });
+
     }
 
   }
+
 
 
   if (loading) {
@@ -203,11 +251,19 @@ function DeveloperDetails() {
   }
 
 
+
   if (error) {
 
-    return <p>Error: {error}</p>;
+    return (
+
+      <p>
+        Error: {error}
+      </p>
+
+    );
 
   }
+
 
 
   if (!developer) {
@@ -222,13 +278,17 @@ function DeveloperDetails() {
 
 
         <p>
+
           The profile you are looking for
           does not exist.
+
         </p>
 
 
         <Link to="/">
+
           ← Back to Developers
+
         </Link>
 
       </div>
@@ -236,6 +296,7 @@ function DeveloperDetails() {
     );
 
   }
+
 
 
   return (
@@ -246,11 +307,37 @@ function DeveloperDetails() {
       {notification && (
 
         <Notification
-          message={notification.message}
-          type={notification.type}
+
+          message={
+            notification.message
+          }
+
+          type={
+            notification.type
+          }
+
         />
 
       )}
+
+
+
+      {deleteNotification && (
+
+        <Notification
+
+          message={
+            deleteNotification.message
+          }
+
+          type={
+            deleteNotification.type
+          }
+
+        />
+
+      )}
+
 
 
       {showDeleteModal && (
@@ -279,6 +366,7 @@ function DeveloperDetails() {
       )}
 
 
+
       <div className="profile-top-bar">
 
 
@@ -286,28 +374,50 @@ function DeveloperDetails() {
           to="/"
           className="back-link"
         >
+
           ← Back to Developers
+
         </Link>
+
 
 
         <div className="profile-actions">
 
 
           <Link
-            to={`/developer/${developer.id}/edit`}
+
+            to={
+              `/developer/${developer.id}/edit`
+            }
+
             className="profile-button edit-button"
+
           >
+
             Edit Developer
+
           </Link>
 
 
+
           <button
-            className="profile-button delete-button"
-            onClick={() =>
-              setShowDeleteModal(true)
+
+            className={
+              "profile-button delete-button"
             }
+
+            onClick={() => {
+
+              setDeleteNotification(null);
+
+              setShowDeleteModal(true);
+
+            }}
+
           >
+
             Delete Developer
+
           </button>
 
 
@@ -316,7 +426,9 @@ function DeveloperDetails() {
       </div>
 
 
+
       <hr />
+
 
 
       <div className="profile-header">
@@ -328,8 +440,11 @@ function DeveloperDetails() {
           {developer.avatar ? (
 
             <img
+
               src={developer.avatar}
+
               alt={developer.name}
+
             />
 
           ) : (
@@ -340,6 +455,7 @@ function DeveloperDetails() {
 
 
         </div>
+
 
 
         <h1>
@@ -353,11 +469,14 @@ function DeveloperDetails() {
 
 
         <p className="profile-location">
+
           {developer.location}
+
         </p>
 
 
       </div>
+
 
 
       <div className="profile-section">
@@ -373,6 +492,7 @@ function DeveloperDetails() {
       </div>
 
 
+
       <div className="profile-section">
 
         <h3>
@@ -383,21 +503,29 @@ function DeveloperDetails() {
         <ul className="skills-container">
 
 
-          {developer.skills.map((skill) => (
+          {developer.skills.map(
+            (skill) => (
 
-            <li
-              key={skill}
-              className="skill-badge"
-            >
-              {skill}
-            </li>
+              <li
 
-          ))}
+                key={skill}
+
+                className="skill-badge"
+
+              >
+
+                {skill}
+
+              </li>
+
+            )
+          )}
 
 
         </ul>
 
       </div>
+
 
 
       <div className="profile-section">
@@ -413,38 +541,53 @@ function DeveloperDetails() {
       </div>
 
 
-      ```jsx
-<div className="profile-contact">
 
-  <div className="contact-item">
-    <span className="contact-label">
-      📧 : 
-    </span>
+      <div className="profile-section">
 
-    <a
-      href={`mailto:${developer.email}`}
-      className="contact-link"
-    >
-      {developer.email}
-    </a>
-  </div>
+        <h3>
+          Contact
+        </h3>
 
 
-  <div className="contact-item">
-    <span className="contact-label">
-      📞 : 
-    </span>
+        <p>
 
-    <a
-      href={`tel:${developer.phone}`}
-      className="contact-link"
-    >
-      {developer.phone}
-    </a>
-  </div>
+          <a
 
-</div>
-```
+            href={
+              `mailto:${developer.email}`
+            }
+
+            className="contact-link"
+
+          >
+
+            {developer.email}
+
+          </a>
+
+        </p>
+
+
+        <p>
+
+          <a
+
+            href={
+              `tel:${developer.phone}`
+            }
+
+            className="contact-link"
+
+          >
+
+            {developer.phone}
+
+          </a>
+
+        </p>
+
+
+      </div>
 
 
     </div>

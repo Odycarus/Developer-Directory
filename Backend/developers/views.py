@@ -1,10 +1,14 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.contrib.auth.models import User
 from .models import Developer
 from .serializers import DeveloperSerializer, RegisterSerializer, LoginSerializer
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.response import Response
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .serializers import CurrentUserSerializer
 
 
 class DeveloperList(generics.ListCreateAPIView):
@@ -45,4 +49,20 @@ class LoginView(generics.CreateAPIView):
 
         return Response(
             serializer.validated_data
+        )
+
+class CurrentUserView(APIView):
+
+    permission_classes = [
+        IsAuthenticated
+    ]
+
+    def get(self, request):
+
+        serializer = CurrentUserSerializer(
+            request.user
+        )
+
+        return Response(
+            serializer.data
         )
