@@ -53,6 +53,8 @@ export function DeveloperProvider({ children }) {
 
         skills: user.skills || [],
 
+        owner_id: user.owner_id,
+
       }));
 
 

@@ -20,6 +20,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import Notification from "../components/Notification";
 
 
+
 function DeveloperDetails() {
 
   const { id } = useParams();
@@ -32,6 +33,7 @@ function DeveloperDetails() {
   const { refreshDevelopers } =
     useDeveloperContext();
 
+  const { user } = useAuth();
 
   const { accessToken } =
     useAuth();
@@ -297,6 +299,10 @@ function DeveloperDetails() {
 
   }
 
+  const isOwner =
+  user &&
+  user.id === developer.owner_id;
+
 
 
   return (
@@ -383,46 +389,30 @@ function DeveloperDetails() {
 
         <div className="profile-actions">
 
+  {(developer.owner_id === user?.id ||
+    user?.is_superuser) && (
 
-          <Link
+    <>
+      <Link
+        to={`/developer/${developer.id}/edit`}
+        className="profile-button edit-button"
+      >
+        Edit Developer
+      </Link>
 
-            to={
-              `/developer/${developer.id}/edit`
-            }
+      <button
+        className="profile-button delete-button"
+        onClick={() =>
+          setShowDeleteModal(true)
+        }
+      >
+        Delete Developer
+      </button>
+    </>
 
-            className="profile-button edit-button"
+  )}
 
-          >
-
-            Edit Developer
-
-          </Link>
-
-
-
-          <button
-
-            className={
-              "profile-button delete-button"
-            }
-
-            onClick={() => {
-
-              setDeleteNotification(null);
-
-              setShowDeleteModal(true);
-
-            }}
-
-          >
-
-            Delete Developer
-
-          </button>
-
-
-        </div>
-
+</div>
       </div>
 
 

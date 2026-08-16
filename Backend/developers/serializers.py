@@ -9,6 +9,11 @@ from .models import Developer
 
 class DeveloperSerializer(serializers.ModelSerializer):
 
+    owner_id = serializers.IntegerField(
+        source="owner.id",
+        read_only=True
+    )
+
     class Meta:
         model = Developer
         fields = "__all__"

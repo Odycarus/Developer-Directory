@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Navbar.css";
+import { useDeveloperContext } from "../context/DeveloperContext";
 
 function Navbar() {
 
@@ -12,6 +13,14 @@ function Navbar() {
     isAuthenticated,
     logout,
   } = useAuth();
+
+  const { developers } = useDeveloperContext();
+
+  const hasDeveloperProfile =
+  developers.some(
+    (developer) =>
+      developer.owner_id === user?.id
+  );
 
   return (
 
@@ -28,13 +37,14 @@ function Navbar() {
           <>
             <div className="navbar-top-actions">
 
-              <Link
-                to="/add-developer"
-                className="add-developer-button"
-              >
-                + Add Developer
-              </Link>
-
+              {(!hasDeveloperProfile || user?.is_superuser) && (
+  <Link
+    to="/add-developer"
+    className="add-developer-button"
+  >
+    + Add Developer
+  </Link>
+)}
               <Link
                 to="/"
                 className="nav-button"
@@ -56,7 +66,7 @@ function Navbar() {
             <div className="navbar-user-actions">
 
               <span className="welcome-user">
-                Welcome, {user}
+                Welcome, {user?.username}
               </span>
 
               <button
