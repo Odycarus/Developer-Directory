@@ -5,10 +5,10 @@
 
 
   /* Colors */
-  --primary-color: #2f3843;
-  --secondary-color: #768799;
+  --primary-color: #181A18;
+  --secondary-color: #1a1a1d;
 
-  --background-color: #191821;
+  --background-color: linear-gradient(180deg, rgba(24, 26, 24, 1) 0%, rgba(240, 239, 231, 1) 96%, rgba(240, 235, 227, 1) 100%);
   --surface-color: #16191f;
 
   --text-color: #f8fafc;
@@ -51,6 +51,8 @@ body {
   --secondary-color: #000000;
 
   --background-color: #74a9d7;
+
+  background: linear-gradient(0deg, rgba(24, 26, 24, 1) 0%, rgba(240, 239, 231, 1) 96%, rgba(240, 235, 227, 1) 100%);;
   --surface-color: #f8fafc;
 
   --text-color: #000000;
@@ -60,5 +62,7 @@ body {
 
   --shadow:
     0 8px 20px rgba(0,0,0,.08);
+
+
 
 }

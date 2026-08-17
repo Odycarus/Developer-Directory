@@ -16,7 +16,10 @@ function DeveloperForm({
     formData.skills.trim();
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+  className="developer-form"
+  onSubmit={handleSubmit}
+>
 
       <p className="required-note">
         * Required fields

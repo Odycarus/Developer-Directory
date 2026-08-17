@@ -1,215 +1,200 @@
 .navbar {
-
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
 
   padding: 20px 30px;
 
+  border-bottom: 1px solid var(--border-color);
 }
-
 
 .navbar h2 {
-
   margin: 0;
 
-  font-size: 1.8rem;
+  font-size: 1.6rem;
+  font-weight: 600;
 
+  color: var(--text-color);
 }
 
+/* Right side */
 
 .navbar-actions {
-
   display: flex;
-
   flex-direction: column;
-
   align-items: flex-end;
 
   gap: 10px;
-
 }
-
 
 .navbar-top-actions {
-
   display: flex;
-
   align-items: center;
 
-  gap: 15px;
-
+  gap: 10px;
 }
-
 
 .navbar-user-actions {
-
   display: flex;
-
   align-items: center;
-
   justify-content: flex-end;
 
-  gap: 15px;
-
+  gap: 12px;
 }
-
 
 .welcome-user {
-
+  font-size: 0.95rem;
   font-weight: 600;
 
   color: var(--text-color);
-
 }
-
 
 .navbar-actions a {
-
   text-decoration: none;
-
 }
 
-
-/* Home + Dark Mode */
-
+/* Standard navigation buttons */
 
 .nav-button {
-
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
 
-  padding: 10px 18px;
-
-  border-radius: 10px;
+  padding: 9px 16px;
 
   border: 1px solid var(--border-color);
+  border-radius: 8px;
 
   background-color: var(--background-color);
-
   color: var(--text-color);
 
+  font-size: 0.95rem;
   font-weight: 600;
-
-  font-size: 1rem;
 
   cursor: pointer;
 
   text-decoration: none;
 
-  transition: 0.2s ease;
-
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
-
 
 .nav-button:hover {
-
   background-color: var(--hover-color);
 
-  transform: translateY(-2px);
-
+  transform: translateY(-1px);
 }
-
 
 .nav-button:active {
-
   transform: translateY(0);
-
 }
-
 
 /* Add Developer */
 
-
 .add-developer-button {
-
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
 
-  padding: 12px 25px;
+  padding: 9px 18px;
 
-  border-radius: 10px;
+  border-radius: 8px;
 
   background-color: var(--primary-color);
-
   color: white;
 
+  font-size: 0.95rem;
   font-weight: 600;
 
   text-decoration: none;
 
-  transition: 0.2s ease;
-
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
-
 
 .add-developer-button:hover {
-
   background-color: var(--primary-hover);
 
-  transform: translateY(-2px);
-
+  transform: translateY(-1px);
 }
-
 
 .add-developer-button:active {
-
   transform: translateY(0);
-
 }
-
 
 /* Logout */
 
-
 .logout-button {
-
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
 
-  padding: 10px 18px;
-
-  border-radius: 10px;
+  padding: 9px 16px;
 
   border: 1px solid var(--border-color);
+  border-radius: 8px;
 
   background-color: var(--background-color);
-
   color: var(--text-color);
 
+  font-size: 0.95rem;
   font-weight: 600;
-
-  font-size: 1rem;
 
   cursor: pointer;
 
-  transition: 0.2s ease;
-
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
-
 
 .logout-button:hover {
-
   background-color: var(--hover-color);
 
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+}
 
+.logout-button:active {
+  transform: translateY(0);
 }
 
 
-.logout-button:active {
+/* Mobile */
 
-  transform: translateY(0);
+@media (max-width: 700px) {
+  .navbar {
+    align-items: flex-start;
 
+    padding: 16px 20px;
+  }
+
+  .navbar h2 {
+    font-size: 1.3rem;
+  }
+
+  .navbar-actions {
+    gap: 8px;
+  }
+
+  .navbar-top-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .navbar-user-actions {
+    flex-wrap: wrap;
+  }
+
+  .welcome-user {
+    font-size: 0.85rem;
+  }
+
+  .nav-button,
+  .add-developer-button,
+  .logout-button {
+    padding: 8px 12px;
+
+    font-size: 0.85rem;
+  }
 }
