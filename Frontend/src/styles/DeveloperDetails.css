@@ -7,9 +7,19 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
 
-  background: var(--background-color);
+  background: var(--surface-color);
+  color: var(--text-color);
+
+  box-shadow: var(--shadow);
 
   box-sizing: border-box;
+}
+
+.profile-card {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 
@@ -81,14 +91,13 @@
 .profile-button:active {
   transform: translateY(0);
 }
-
 .edit-button {
-  background-color: var(--primary-color);
+  background-color: #2563eb;
   color: white;
 }
 
 .edit-button:hover {
-  background-color: var(--primary-hover);
+  background-color: #1d4ed8;
 }
 
 .delete-button {
