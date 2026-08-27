@@ -27,13 +27,14 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "False").lower() == "true"
+    SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "False").lower() == "true"
+    CSRF_COOKIE_SECURE = os.getenv("CSRF_COOKIE_SECURE", "False").lower() == "true"
+    SECURE_BROWSER_XSS_FILTER = os.getenv("SECURE_BROWSER_XSS_FILTER", "False").lower() == "true"
+    SECURE_CONTENT_TYPE_NOSNIFF = os.getenv("SECURE_CONTENT_TYPE_NOSNIFF", "False").lower() == "true"
+    X_FRAME_OPTIONS = os.getenv("X_FRAME_OPTIONS", "DENY")
     SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = "DENY"
-    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS", 0))
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
