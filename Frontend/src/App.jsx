@@ -15,6 +15,7 @@ import EditDeveloper from "./pages/EditDeveloper";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import DeleteUser from "./pages/DeleteUser";
 
 function App() {
 
@@ -52,6 +53,15 @@ function App() {
           path="/register"
           element={<Register />}
         />
+
+        <Route
+  path="/delete-user"
+  element={
+    <ProtectedRoute>
+      <DeleteUser />
+    </ProtectedRoute>
+  }
+/>
         
         <Route
           path="/add-developer"

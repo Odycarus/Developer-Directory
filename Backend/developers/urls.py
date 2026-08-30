@@ -8,6 +8,8 @@ from .views import (
     RegisterView,
     LoginView,
     CurrentUserView,
+    AdminDeleteUserView,
+    AdminUserListView,
 )
 
 
@@ -41,6 +43,16 @@ urlpatterns = [
     path(
         "me/",
         CurrentUserView.as_view(),
+    ),
+
+    path(
+        "admin/users/<int:user_id>/",
+        AdminDeleteUserView.as_view(),
+    ),
+
+    path(
+    "admin/users/",
+    AdminUserListView.as_view(),
     ),
 
 ]

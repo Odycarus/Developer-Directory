@@ -45,6 +45,15 @@ function Navbar() {
     + Add Developer
   </Link>
 )}
+
+{user?.is_superuser && (
+  <Link
+    to="/delete-user"
+    className="add-developer-button"
+  >
+    Delete User
+  </Link>
+)}
               <Link
                 to="/"
                 className="nav-button"

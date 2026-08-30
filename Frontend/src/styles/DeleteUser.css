@@ -1,0 +1,107 @@
+.delete-user-page {
+max-width: 850px;
+
+margin: 40px auto;
+padding: 35px;
+
+border: 1px solid var(--border-color);
+border-radius: var(--radius);
+
+background: var(--surface-color);
+color: var(--text-color);
+
+box-shadow: var(--shadow);
+
+box-sizing: border-box;
+}
+
+.delete-user-page h1 {
+margin: 0 0 8px;
+
+font-size: 2rem;
+}
+
+.delete-user-page > p {
+margin: 0 0 30px;
+
+color: var(--secondary-color);
+}
+
+.user-list {
+display: flex;
+
+flex-direction: column;
+
+gap: 12px;
+}
+
+.user-row {
+display: flex;
+
+align-items: center;
+justify-content: space-between;
+
+gap: 20px;
+
+padding: 16px 18px;
+
+border: 1px solid var(--border-color);
+
+border-radius: var(--radius);
+
+background: var(--background-color);
+
+box-sizing: border-box;
+}
+
+.user-row > div {
+display: flex;
+
+flex-direction: column;
+
+gap: 4px;
+
+min-width: 0;
+}
+
+.user-row strong {
+font-size: 1rem;
+}
+
+.user-row span {
+color: var(--secondary-color);
+
+font-size: 0.9rem;
+
+overflow: hidden;
+
+text-overflow: ellipsis;
+}
+
+.user-row .profile-button {
+flex-shrink: 0;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+.delete-user-page {
+margin: 25px 16px;
+
+padding: 24px 20px;
+
+}
+
+.user-row {
+align-items: stretch;
+
+flex-direction: column;
+
+}
+
+.user-row .profile-button {
+width: 100%;
+}
+
+}
