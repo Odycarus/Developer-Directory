@@ -12,6 +12,10 @@ import {
 
 const AuthContext = createContext();
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  "http://127.0.0.1:8000/api";
+
 export function AuthProvider({ children }) {
 
   const [accessToken, setAccessToken] =
@@ -58,7 +62,7 @@ export function AuthProvider({ children }) {
   ) {
 
     const response = await fetch(
-      "http://127.0.0.1:8000/api/developers/login/",
+      `${API_BASE_URL}/developers/login/`,
       {
         method: "POST",
 

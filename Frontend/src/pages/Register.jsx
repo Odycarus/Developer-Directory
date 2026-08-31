@@ -5,6 +5,10 @@ import "../styles/Login.css";
 function Register() {
   const navigate = useNavigate();
 
+  const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  "http://127.0.0.1:8000/api";
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -51,7 +55,7 @@ function Register() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/developers/register/",
+        `${API_BASE_URL}/developers/register/`,
         {
           method: "POST",
 
