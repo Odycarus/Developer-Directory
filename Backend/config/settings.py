@@ -41,7 +41,7 @@ ALLOWED_HOSTS = [
     host.strip()
     for host in os.getenv(
         "ALLOWED_HOSTS",
-        ""
+        "developerdirectoryodycarus-ddo-git-main-odycarus1.vercel.app"
     ).split(",")
     if host.strip()
 ]
